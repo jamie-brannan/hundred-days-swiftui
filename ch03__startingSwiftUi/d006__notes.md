@@ -10,6 +10,12 @@
 > 
 > Today you have seven topics to work through, and you’ll meet `Form`, `NavigationView`, `@State`, and more.
 
+- [*Day 6 • Wednesday August 18, 2021*](#day-6--wednesday-august-18-2021)
+  - [:one: WeSplit: Introduction](#one-wesplit-introduction)
+  - [:two:  [Understanding the basic structure of a SwiftUI app](#two--understanding-the-basic-structure-of-a-swiftui-app)
+  - [:three:  Creating a form](#three--creating-a-form)
+  - [:four: Adding a navigation bar](#four-adding-a-navigation-bar)
+
 > Once you’ve made it through those topics, make sure and post your progress somewhere online – it’s such an easy way to keep yourself motivated and accountable!
 
 ## :one: [WeSplit: Introduction](https://www.hackingwithswift.com/books/ios-swiftui/wesplit-introduction) 
@@ -62,8 +68,12 @@ But I'd not put anything that has to do with networking here?
 > * `LaunchScreen.storyboard` is a visual editor for creating a small piece of UI to show when your app is launching.
 >
 > * `Info.plist` is a collection of special values that describe to the system how your app works – which version it is, which device orientations you support, and more. Things that aren’t code, but are still important.
->
-> * Preview Content is a yellow group, with Preview `Assets.xcassets `inside – this is another asset catalog, this time specifically for example images you want to use when you’re designing your user interfaces, to give you an idea of how they might look when the program is running.
+
+These are familiar parts and more or less what's been said.
+
+> * Preview Content is a yellow group, with Preview `Assets.xcassets` inside – this is another asset catalog, this time specifically for example images you want to use when you’re designing your user interfaces, to give you an idea of how they might look when the program is running.
+
+This is new.
 
 >All our work for this project will take place in ContentView.swift, which Xcode will already have opened for you. It has some comments at the top – those things marked with two slashes at the start – and they are ignored by Swift, so you can use them to add explanations about how your code works.
 
@@ -87,24 +97,145 @@ struct ContentView_Previews: PreviewProvider {
 
 > Before we start writing our own code, it’s worth going over what all that does, because a couple of things will be new.
 > 
-> First, import SwiftUI tells Swift that we want to use all the functionality given to us by the SwiftUI framework. Apple provides us with many frameworks for things like machine learning, audio playback, image processing, and more, so rather than assume our program wants to use everything ever we instead say which parts we want to use so they can be loaded.
-> 
-> Second, struct ContentView: View creates a new struct called ContentView, saying that it conforms to the View protocol. View comes from SwiftUI, and is the basic protocol that must be adopted by anything you want to draw on the screen – all text, buttons, images, and more are all views, including your own layouts that combine other views.
-> 
-> Third, var body: some View defines a new computed property called body, which has an interesting type: some View. This means it will return something that conforms to the View protocol, but that extra some keyword adds an important restriction: it must always be the same kind of view being returned – you can’t sometimes return one type of thing and other times return a different type of thing.
+> First, `import SwiftUI` tells Swift that we want to use all the functionality given to us by the SwiftUI framework. 
+
+:white_check_mark: yup
+
+> Second, `struct ContentView: View` creates a new `struct` called `ContentView`, saying that it conforms to the `View` protocol. 
+>
+> * `View` comes from `SwiftUI`, and is the basic protocol _that must be adopted by anything you want to draw on the screen_ – all text, buttons, images, and more are all views, including your own layouts that combine other views.
+
+Everything on the screen (for this app) is a view type
+
+> Third, `var body: some View` defines **a new computed property** called body, which has an interesting type: `some View`. This means it will return something that conforms to the `View` protocol, but that extra `some` keyword adds _an important restriction: it must always be the same kind of view being returned_ – you can’t sometimes return one type of thing and other times return a different type of thing.
 > 
 > We’ll look at this feature more shortly, but for now just remember that it means “one specific sort of view must be sent back from this property.”
+
+But not necessarily the exact same? Anything of this type?
+
+> The `View` protocol has only one requirement, which is that you have a computed property called `body` that returns `some View`. You can (and will) add more properties and methods to your view structs, but body is the only thing that’s required.
 > 
-> The View protocol has only one requirement, which is that you have a computed property called body that returns some View. You can (and will) add more properties and methods to your view structs, but body is the only thing that’s required.
+> Fourth, `Text("Hello World")` creates a text view using the string “Hello World”... 
+
+
+> Below the `ContentView` struct you’ll see a `ContentView_Previews` struct, which conforms to the `PreviewProvider` protocol. This piece of code won’t actually form part of your final app that goes to the App Store, but is instead specifically for Xcode to use so it can show a preview of your UI design alongside your code.
 > 
-> Fourth, Text("Hello World") creates a text view using the string “Hello World”. Text views are simple pieces of static text that get drawn onto the screen, and will automatically wrap across multiple lines as needed.
+> These previews use an Xcode feature called **the canvas**, w_hich is usually visible directly to the right of your code_. You can customize the preview code if you want, and they will only affect the way the canvas shows your layouts – it won’t change the actual app that gets run.
+
+Ok nice feature
+
+> Tip: Very often you’ll find that an error in your code stops Xcode’s canvas from updating – you’ll see something like “Automatic preview updating paused”, and can press Resume to fix it. As you’ll be doing this a lot, let me recommend an important shortcut: Option+Cmd+P does the same as clicking Resume.
+
+## :three:  [Creating a form](https://www.hackingwithswift.com/books/ios-swiftui/creating-a-form) 
+
+> Many apps require users to enter some sort of input – it might be asking them to set some preferences, it might be asking them to confirm where they want a car to pick them up, it might be to order food from a menu, or anything similar.
 > 
-> Below the ContentView struct you’ll see a ContentView_Previews struct, which conforms to the PreviewProvider protocol. This piece of code won’t actually form part of your final app that goes to the App Store, but is instead specifically for Xcode to use so it can show a preview of your UI design alongside your code.
+> SwiftUI gives us a dedicated view type for this purpose, called `Form`. Forms are scrolling lists of static controls like text and images, but can also include user interactive controls like text fields, toggle switches, buttons, and more.
 > 
-> These previews use an Xcode feature called the canvas, which is usually visible directly to the right of your code. You can customize the preview code if you want, and they will only affect the way the canvas shows your layouts – it won’t change the actual app that gets run.
+> You can create a basic form just by wrapping the default text view inside `Form`, like this:
+
+```swift
+var body: some View {
+    Form {
+        Text("Hello World")
+    }
+}
+```
+
+> If you’re using Xcode’s canvas, you’ll see it change quite dramatically: before Hello World was centered on a white screen, but now the screen is a light gray, and Hello World appears in the top left in white.
 > 
-> Xcode can only show the canvas on macOS Catalina or later. If you don’t see the canvas and are already running Catalina, go to the Editor menu and select Canvas.
+> What you’re seeing here is the beginnings of a list of data, just like you’d see in the Settings app. We have one row in our data, which is the Hello World text, but we can add more freely and have them appear in our form immediately:
+
+```swift
+Form {
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+}
+```
+
+> In fact, you can have as many things inside a form as you want, although if you intend to add more than 10 SwiftUI requires that you place things in groups to avoid problems.
 > 
-> If you don’t have Catalina, you’ll need to run your code in the Simulator in order to see how it looks.
+> For example, this code shows ten rows of text just fine:
+
+```swift
+Form {
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+}
+```
+
+> But this attempts to show 11, which is not allowed:
+
+```swift
+Form {
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+    Text("Hello World")
+}
+```
+
+> Tip: **In case you were curious why 10 rows are allowed but 11 is not, this is a limitation in SwiftUI: it was coded to understand how to add one thing to a form**, how to add two things to a form, how to add three things, four things, five things, and more, all the way up to 10, but not beyond – they needed to draw a line somewhere. 
+> 
+> This limit of 10 children inside a parent actually applies everywhere in SwiftUI.
+> 
+> If you wanted to have 11 things inside the form you should put some rows inside a `Group`:
+
+```swift
+Form {
+    Group {
+        Text("Hello World")
+        Text("Hello World")
+        Text("Hello World")
+        Text("Hello World")
+        Text("Hello World")
+        Text("Hello World")
+    }
+
+    Group {
+        Text("Hello World")
+        Text("Hello World")
+        Text("Hello World")
+        Text("Hello World")
+        Text("Hello World")
+    }
+}
+```
+
+> Groups don’t actually change the way your user interface looks, they just let us work around SwiftUI’s limitation of ten child views inside a parent – that’s text views inside a form, in this instance.
+> 
+> If you want your form to look different when split its items into chunks, you should use the Section view instead. This splits your form into discrete visual groups, just like the Settings app does:
+
+```swift
+Form {
+    Section {
+        Text("Hello World")
+    }
+
+    Section {
+        Text("Hello World")
+        Text("Hello World")
+    }
+}
+```
+
+> There’s no hard and fast rule when you should split a form into sections – it’s just there to group related items visually.
+
 > 
 > Tip: Very often you’ll find that an error in your code stops Xcode’s canvas from updating – you’ll see something like “Automatic preview updating paused”, and can press Resume to fix it. As you’ll be doing this a lot, let me recommend an important shortcut: Option+Cmd+P does the same as clicking Resume.
