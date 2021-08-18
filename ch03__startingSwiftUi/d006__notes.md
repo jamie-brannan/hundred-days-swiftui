@@ -237,5 +237,76 @@ Form {
 
 > There’s no hard and fast rule when you should split a form into sections – it’s just there to group related items visually.
 
+## :four: [Adding a navigation bar](https://www.hackingwithswift.com/books/ios-swiftui/adding-a-navigation-bar) 
+
+> By default iOS allows us to place content anywhere on the screen, including under the system clock and the home indicator. This doesn’t look great, which is why by default SwiftUI ensures components are placed in an area where they can’t be covered up by system UI or device rounded corners – an area known as the safe area.
 > 
-> Tip: Very often you’ll find that an error in your code stops Xcode’s canvas from updating – you’ll see something like “Automatic preview updating paused”, and can press Resume to fix it. As you’ll be doing this a lot, let me recommend an important shortcut: Option+Cmd+P does the same as clicking Resume.
+> On an iPhone 11, the safe area spans the space from just below the notch down to just above the home indicator. You can see it in action with a user interface like this one:
+
+```swift
+struct ContentView: View {
+    var body: some View {
+        Form {
+            Section {
+                Text("Hello World")
+            }
+        }
+    }
+}
+```
+> Try running that in the iOS simulator – press the Play button in the top-left corner of Xcode’s window, or press Cmd+R.
+> 
+> You’ll see that the form starts below the notch, so by default the row in our form is fully visible. However, forms can also scroll, so if you swipe around in the simulator you’ll find you can move the row up so it goes under the clock, making them both hard to read.
+> 
+> **A common way of fixing this is by placing a navigation bar at the top of the screen**...
+>
+> You’ve seen that we can place a text view inside a section by adding Section around the text view, and that we can place the section inside a Form in a similar way. Well, we add a navigation bar in just the same way, except here it’s called NavigationView.
+
+```swift
+var body: some View {
+    NavigationView {
+        Form {
+            Section {
+                Text("Hello World")
+            }
+        }
+    }
+}
+```
+
+> When you see that code in Xcode’s canvas, you’ll notice t_here’s a large gray space at the top of your UI_. Well, that’s our navigation bar in action, and if you run your code in the simulator you’ll see the form slides under the bar as it moves to the top of the screen.
+> 
+> You’ll usually want to put some sort of title in the navigation bar, and you can do that by attaching a modifier to whatever you’ve placed inside. Modifiers are regular methods with one small difference: they always return a new instance of whatever you use them on.
+> 
+> Let’s try adding a modifier to set the navigation bar title for our form:
+
+```swift
+NavigationView {
+    Form {
+        Section {
+            Text("Hello World")
+        }
+    }
+    .navigationBarTitle(Text("SwiftUI"))
+}
+```
+
+Woah weird, different defaults in SwiftUI compared to UIKit
+
+> When we attach the `.navigationBarTitle()` modifier to our form, Swift actually creates a new form that has a navigation bar title plus all the existing contents you provided.
+> 
+> When you add a title to a navigation bar, you’ll notice it uses a large font for that title. You can get a small font with a slightly different call to `navigationBarTitle()`:
+
+```swift
+.navigationBarTitle("SwiftUI", displayMode: .inline)
+```
+
+This is just an alternative
+
+> You can see how Apple uses these large and small titles in the Settings app: the first screen says “Settings” in large text, and subsequent screens show their titles in small text.
+> 
+> Because it’s so common to use large titles, there’s a shortcut version you can use that lets you use a plain string rather than a text view:
+
+```swift
+.navigationBarTitle("SwiftUI")
+```
