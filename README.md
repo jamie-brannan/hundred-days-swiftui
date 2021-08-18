@@ -13,4 +13,4 @@ Now that you’ve mastered the basics of Swift, in these days you’ll start bui
 
 | Challenge day | Calendar day | Within goaltime?| What was new? |
 |---|---|---|---|
-| Day 06 | August ~ | ~ | Project 1, part one |
+| Day 06 | August 18 | ~ | Project 1, part one |
