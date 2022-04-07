@@ -17,6 +17,7 @@
   - [:four: Adding a navigation bar](#four-adding-a-navigation-bar)
   - [:five: Modifying program state](#five-modifying-program-state)
   - [:six: Building Sate to user interface controls](#six-building-sate-to-user-interface-controls)
+  - [:seven: Creating views in a loop](#seven-creating-views-in-a-loop)
 
 > Once you’ve made it through those topics, make sure and post your progress somewhere online – it’s such an easy way to keep yourself motivated and accountable!
 
@@ -459,3 +460,93 @@ Text("Your name is \(name)")
 > So, when you see a dollar sign before a property name, remember that it creates a two-way binding: the value of the property is read, but also written.
 
 :heart_eyes: Wow this is so much fun!
+
+## :seven: [Creating views in a loop](https://www.hackingwithswift.com/books/ios-swiftui/creating-views-in-a-loop) 
+
+> It’s common to want to create several SwiftUI views inside a loop. For example, we might want to loop over an array of names and have each one be a text view, or loop over an array of menu items and have each one be shown as an image.
+> 
+> SwiftUI gives us a dedicated view type for this purpose, called `ForEach`. This can loop over arrays and ranges, creating as many views as needed. Even better, `ForEach` doesn’t get hit by the 10-view limit that would affect us if we had typed the views by hand.
+> 
+> `ForEach` will run a closure once for every item it loops over, passing in the current loop item. For example, if we looped from 0 to 100 it would pass in 0, then 1, then 2, and so on.
+> 
+> For example, this creates a form with 100 rows:
+
+```swift
+Form {
+    ForEach(0..<100) { number in
+        Text("Row \(number)")
+    }
+}
+```
+
+> Because `ForEach` passes in a closure, we can use shorthand syntax for the parameter name, like this:
+
+```swift
+Form {
+    ForEach(0 ..< 100) {
+        Text("Row \($0)")
+    }
+}
+```
+
+> ForEach is particularly useful when working with SwiftUI’s Picker view, which lets us show various options for users to select from.
+> 
+> To demonstrate this, we’re going to define a view that:
+> 
+> 1. Has an array of possible student names.
+> 2. Has an `@State` property storing the currently selected student.
+> 3. Creates a Picker view asking users to select their favorite, using a two-way binding to the `@State` property.
+> 4. Uses `ForEach` to loop over all possible student names, turning them into a text view.
+> 
+> Here’s the code for that:
+
+```swift
+struct ContentView: View {
+    let students = ["Harry", "Hermione", "Ron"]
+    @State private var selectedStudent = "Harry"
+
+    var body: some View {
+        NavigationView {
+            Form {
+                Picker("Select your student", selection: $selectedStudent) {
+                    ForEach(students, id: \.self) {
+                        Text($0)
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+> There’s not a lot of code in there, but it’s worth clarifying a few things:
+> 
+> 1. The students array doesn’t need to be marked with @State because it’s a constant; it isn’t going to change.
+> 
+> 2. The selectedStudent property starts with the value “Harry” but can change, which is why it’s marked with @State.
+> 
+> 3. The Picker has a label, “Select your student”, which tells users what it does and also provides something descriptive for screen readers to read aloud.
+> 
+> 4. The Picker has a two-way binding to selectedStudent, which means it will start showing a selection of “Harry” but update the property when the user selects something else.
+> 
+> 5. Inside the ForEach we loop over all the students.
+> 
+> 6. For each student we create one text view, showing that student’s name.
+> 
+> The only confusing part in there is this: `ForEach(students, id: \.self)`. That loops over the students array so we can create a text view for each one, but the `id: \.self` part is important. T**his exists because SwiftUI needs to be able to identify every view on the screen uniquely, so it can detect when things change.**
+
+:question: *What is programatically speaking `id: \.self` though?* 
+
+> For example, if we rearranged our array so that Ron came first, SwiftUI would move its text view at the same time. So, we need to tell SwiftUI how it can identify each item in our string array uniquely – what about each string makes it unique? If we had an array of structs we might say “oh, my struct has a title string that is always unique,” or “my struct has an id integer that is always unique.” Here, though, we just have an array of simple strings, and the only thing unique about the string is the string itself: each string in our array is different, so the strings are naturally unique.
+
+It just generates an id for each thing that gets thrown into the loop then?
+
+> So, when we’re using ForEach to create many views and SwiftUI asks us what identifier makes each item in our string array unique, our answer is `\.self,` which means “the strings themselves are unique.” This does of course mean that **if you added duplicate strings to the students array you might hit problems**, but here it’s just fine.
+
+:warning: *So duplicates are not really handled well in these loops* 
+
+> Anyway, we’ll look at other ways to use ForEach in the future, but that’s enough for this project.
+> 
+> This is the final part of the overview for this project, so it’s almost time to get started with the real code. If you want to save the examples you’ve programmed you should copy your project directory somewhere else.
+> 
+> When you’re ready, put `ContentView.swift` back to the way it started when you first made the project, so we have a clean slate to work from:
