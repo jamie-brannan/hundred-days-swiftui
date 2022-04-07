@@ -16,6 +16,7 @@
   - [:three:  Creating a form](#three--creating-a-form)
   - [:four: Adding a navigation bar](#four-adding-a-navigation-bar)
   - [:five: Modifying program state](#five-modifying-program-state)
+  - [:six: Building Sate to user interface controls](#six-building-sate-to-user-interface-controls)
 
 > Once you’ve made it through those topics, make sure and post your progress somewhere online – it’s such an easy way to keep yourself motivated and accountable!
 
@@ -377,3 +378,84 @@ struct ContentView: View {
 > Tip: There are several ways of storing program state in `SwiftUI`, and you’ll learn all of them. `@State `is specifically designed for simple properties that are stored in one view. As a result, Apple recommends we add private access control to those properties, like this: `@State private var tapCount = 0`.
 
 :question: *We're starting simple, but is this "the most simple"?*
+
+## :six: [Building Sate to user interface controls](https://www.hackingwithswift.com/books/ios-swiftui/binding-state-to-user-interface-controls) 
+
+> SwiftUI’s `@State` property wrapper lets us modify our view structs freely, which means as our program changes we can update our view properties to match.
+> 
+> However, things are a little more complex with user interface controls. For example, if you wanted to create an editable text box that users can type into, you might create a SwiftUI view like this one:
+
+```swift
+struct ContentView: View {
+    var body: some View {
+        Form {
+            TextField("Enter your name")
+            Text("Hello, world!")
+        }
+    }
+}
+```
+
+> That tries to create a form containing a text field and a text view. However, that code won’t compile because SwiftUI wants to know where to store the text in the text field.
+> 
+> Remember, views are a function of their state – that text field can only show something if it reflects a value stored in your program. What SwiftUI wants is a string property in our struct that can be shown inside the text field, and will also store whatever the user types in the text field.
+> 
+> So, we could change the code to this:
+
+```swift
+struct ContentView: View {
+    var name = ""
+
+    var body: some View {
+        Form {
+            TextField("Enter your name", text: name)
+            Text("Hello, world!")
+        }
+    }
+}
+```
+
+>That adds a name property, then uses it to create the text field. However, that code still won’t work because Swift needs to be able to update the name property to match whatever the user types into the text field, so you might use @State like this:
+
+```swift
+@State private var name = ""
+```
+
+> But that still isn’t enough, and our code still won’t compile.
+> 
+> The problem is that Swift differentiates between “show the value of this property here” and “show the value of this property here, but write any changes back to the property.”
+> 
+> In the case of our text field, Swift needs to make sure whatever is in the text is also in the name property, so that it can fulfill its promise that our views are a function of their state – that everything the user can see is just the visible representation of the structs and properties in our code.
+> 
+> This is what’s called a **two-way binding**: we bind the text field so that it shows the value of our property, but we also bind it so that any changes to the text field also update the property.
+> 
+> In Swift, we mark these two-way bindings with _a special symbol so they stand out_: we write a dollar sign before them. This tells Swift that it should read the value of the property but also write it back as any changes happen.
+> 
+> So, the correct version of our struct is this:
+
+```swift
+struct ContentView: View {
+    @State private var name = ""
+
+    var body: some View {
+        Form {
+            TextField("Enter your name", text: $name)
+            Text("Hello, world!")
+        }
+    }
+}
+```
+
+> Try running that code now – you should find you can tap on the text field and enter your name, as expected.
+> 
+> Before we move on, let’s modify the text view so that it shows the user’s name directly below their text field:
+
+```swift
+Text("Your name is \(name)")
+```
+
+> Notice how that uses `name` rather than `$name`? That’s because we don’t want a two-way binding here – we want to read the value, yes, but we don’t want to write it back somehow, because that text view won’t change.
+> 
+> So, when you see a dollar sign before a property name, remember that it creates a two-way binding: the value of the property is read, but also written.
+
+:heart_eyes: Wow this is so much fun!
