@@ -1,4 +1,4 @@
-# *Day 6 • Wednesday August 18, 2021*
+# *Day 16 • Wednesday August 18, 2021*
 
 > Now that you’ve mastered the basics of the Swift language, it’s time to start applying your skills to some real code in our first project.
 > 
@@ -10,11 +10,12 @@
 > 
 > Today you have seven topics to work through, and you’ll meet `Form`, `NavigationView`, `@State`, and more.
 
-- [*Day 6 • Wednesday August 18, 2021*](#day-6--wednesday-august-18-2021)
+- [*Day 16 • Wednesday August 18, 2021*](#day-16--wednesday-august-18-2021)
   - [:one: WeSplit: Introduction](#one-wesplit-introduction)
   - [:two:  [Understanding the basic structure of a SwiftUI app](#two--understanding-the-basic-structure-of-a-swiftui-app)
   - [:three:  Creating a form](#three--creating-a-form)
   - [:four: Adding a navigation bar](#four-adding-a-navigation-bar)
+  - [:five: Modifying program state](#five-modifying-program-state)
 
 > Once you’ve made it through those topics, make sure and post your progress somewhere online – it’s such an easy way to keep yourself motivated and accountable!
 
@@ -310,3 +311,59 @@ This is just an alternative
 ```swift
 .navigationBarTitle("SwiftUI")
 ```
+
+## :five: [Modifying program state](https://www.hackingwithswift.com/books/ios-swiftui/modifying-program-state) 
+
+> There’s a saying among SwiftUI developers that our **“views are a function of their state,”** but while that’s only a handful of words it might be quite meaningless to you at first.
+> 
+> If you were playing a fighting game, you might have lost a few lives, scored some points, collected some treasure, and perhaps picked up some powerful weapons. In programming, we call these things state – _the active collection of settings that describe how the game is right now_...
+
+> When we say SwiftUI’s views are a function of their state, we mean that the way your user interface looks – the things people can see and what they can interact with – are determined by the state of your program. For example, they can’t tap Continue until they have entered their name in a text field.
+> 
+> That in itself might sound obvious, but this is actually very different from the alternative that was used previously: **your user interface was determined by a sequence of events**. So, what the user sees right now is because they’ve been using your app for a while, have tapped various things, might have logged in or refreshed their data, and so on.
+> 
+> The “sequence of events” approach means _it’s very hard to store the state of an app_, because the only way to get back the perfect state would be to **play back the exact sequence of events that the user performed**. This is why so_ many apps just don’t even try to save your state_, even slightly – your news app won’t go back to the last article you were reading, Twitter won’t remember if you were part-way through typing a reply to someone, and Photoshop forgets any undo state you had stacked up.
+> 
+> Let’s put this into practice with a button, which in SwiftUI can be created with a title string and an action closure that gets run when the button is tapped:
+
+```swift
+struct ContentView: View {
+    var tapCount = 0
+
+    var body: some View {
+        Button("Tap Count: \(tapCount)") {
+            self.tapCount += 1
+        }
+    }
+}
+```
+
+> That code looks reasonable enough: create a button that says “Tap Count” plus the number of times the button has been tapped, then add 1 to `tapCount` whenever the button is tapped.
+> 
+> However, it won’t build; that’s not valid Swift code. You see, `ContentView` is a struct, which might be created as a constant. If you think back to when you learned about structs, that means it’s immutable – we can’t change its values freely.
+> 
+> When creating struct methods that want to change properties, we need to add the `mutating` keyword: `mutating func doSomeWork()`, for example. However, Swift doesn’t let us make mutating computed properties, which means we can’t write `mutating var body: some View` – it just isn’t allowed.
+> 
+> This might seem like we’re stuck at an impasse: we want to be able to change values while our program runs, but Swift won’t let us because our views are structs.
+> 
+> Fortunately, Swift gives us a special solution called a property wrapper: a special attribute we can place before our properties that effectively gives them super-powers. In the case of storing simple program state like the number of times a button was tapped, we can use a property wrapper from SwiftUI called` @State`, like this:
+
+```swift
+struct ContentView: View {
+    @State var tapCount = 0
+
+    var body: some View {
+        Button("Tap Count: \(tapCount)") {
+            self.tapCount += 1
+        }
+    }
+}
+```
+
+> That small change is enough to make our program work, so you can now build it and try it out.
+> 
+> `@State` allows us to work around the limitation of structs: we know we can’t change their properties because structs are fixed, but `@State` allows that value to be stored separately by SwiftUI in a place that can be modified.
+> 
+> Yes, it feels a bit like a cheat, and you might wonder why we don’t use classes instead – they can be modified freely. But trust me, it’s worthwhile: as you progress you’ll learn that SwiftUI destroys and recreates your structs frequently, so keeping them small and simple structs is important for performance.
+> 
+> Tip: There are several ways of storing program state in `SwiftUI`, and you’ll learn all of them. `@State `is specifically designed for simple properties that are stored in one view. As a result, Apple recommends we add private access control to those properties, like this: `@State private var tapCount = 0`.
