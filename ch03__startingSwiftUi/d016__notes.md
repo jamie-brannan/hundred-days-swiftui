@@ -127,6 +127,8 @@ Ok nice feature
 
 > Tip: Very often you’ll find that an error in your code stops Xcode’s canvas from updating – you’ll see something like “Automatic preview updating paused”, and can press Resume to fix it. As you’ll be doing this a lot, let me recommend an important shortcut: Option+Cmd+P does the same as clicking Resume.
 
+:star: *Option+Cmd+P* 
+
 ## :three:  [Creating a form](https://www.hackingwithswift.com/books/ios-swiftui/creating-a-form) 
 
 > Many apps require users to enter some sort of input – it might be asking them to set some preferences, it might be asking them to confirm where they want a car to pick them up, it might be to order food from a menu, or anything similar.
@@ -341,9 +343,13 @@ struct ContentView: View {
 > That code looks reasonable enough: create a button that says “Tap Count” plus the number of times the button has been tapped, then add 1 to `tapCount` whenever the button is tapped.
 > 
 > However, it won’t build; that’s not valid Swift code. You see, `ContentView` is a struct, which might be created as a constant. If you think back to when you learned about structs, that means it’s immutable – we can’t change its values freely.
-> 
+
+Know this pretty well, that structs are constant and calculated values can't be set like this.
+
 > When creating struct methods that want to change properties, we need to add the `mutating` keyword: `mutating func doSomeWork()`, for example. However, Swift doesn’t let us make mutating computed properties, which means we can’t write `mutating var body: some View` – it just isn’t allowed.
-> 
+
+:red_circle: *"Swift doesn’t let us make **mutating computed properties**"* 
+
 > This might seem like we’re stuck at an impasse: we want to be able to change values while our program runs, but Swift won’t let us because our views are structs.
 > 
 > Fortunately, Swift gives us a special solution called a property wrapper: a special attribute we can place before our properties that effectively gives them super-powers. In the case of storing simple program state like the number of times a button was tapped, we can use a property wrapper from SwiftUI called` @State`, like this:
@@ -365,5 +371,9 @@ struct ContentView: View {
 > `@State` allows us to work around the limitation of structs: we know we can’t change their properties because structs are fixed, but `@State` allows that value to be stored separately by SwiftUI in a place that can be modified.
 > 
 > Yes, it feels a bit like a cheat, and you might wonder why we don’t use classes instead – they can be modified freely. But trust me, it’s worthwhile: as you progress you’ll learn that SwiftUI destroys and recreates your structs frequently, so keeping them small and simple structs is important for performance.
-> 
+
+:question: *So basically the garbage collection and life cycle is easier or better via structs, so that's why theres no class?* 
+
 > Tip: There are several ways of storing program state in `SwiftUI`, and you’ll learn all of them. `@State `is specifically designed for simple properties that are stored in one view. As a result, Apple recommends we add private access control to those properties, like this: `@State private var tapCount = 0`.
+
+:question: *We're starting simple, but is this "the most simple"?*
