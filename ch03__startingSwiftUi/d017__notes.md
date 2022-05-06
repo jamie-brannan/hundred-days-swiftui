@@ -206,6 +206,94 @@ var body: some View {
 
 ## :three: [Adding a segmented control for tip percentages](https://www.hackingwithswift.com/books/ios-swiftui/reading-text-from-the-user-with-textfield) 
 
+> Now we’re going to add a second picker view to our app, but this time we want something slightly different: we want a segmented control. This is a specialized kind of picker that shows a handful of options in a horizontal list, and it works great when you have only a small selection to choose from.
+> 
+> Our form already has two sections: one for the amount and number of people, and one where we’ll show the final result – it’s just showing checkAmount for now, but we’re going to fix it soon.
+> 
+> In the middle of those two sections I’d like you to add a third to show tip percentages:
+
+```swift
+Section {
+    Picker("Tip percentage", selection: $tipPercentage) {
+        ForEach(tipPercentages, id: \.self) {
+            Text($0, format: .percent)
+        }
+    }
+}
+```
+
+> That loops over all the options in our tipPercentages array, converting each one into a text view with the .percent format. Just like the previous picker, SwiftUI will convert that to a single row in our list, and slide a new screen of options in when it’s tapped.
+> 
+> Here, though, I want to show you how to use a segmented control instead, because it looks much better. So, please add this modifier to the tip picker:
+
+```swift
+.pickerStyle(.segmented)
+```
+
+>That should go at the end of the picker’s closing brace, like this:
+
+```swift
+Section {
+    Picker("Tip percentage", selection: $tipPercentage) {
+        ForEach(tipPercentages, id: \.self) {
+            Text($0, format: .percent)
+        }
+    }
+    .pickerStyle(.segmented)
+}
+```
+
+> If you run the program now you’ll see things are starting to come together: users can now enter the amount on their check, select the number of people, and select how much tip they want to leave – not bad!
+> 
+> But things aren’t quite what you think. One problem app developers face is that we take for granted that our app does what we intended it to do – we designed it to solve a particular problem, so we automatically know what everything means.
+> 
+> Try to look at our user interface with fresh eyes, if you can:
+> 
+> * “Amount” makes sense – it’s a box users can type a number into.
+> * “Number of people” is also pretty self-explanatory.
+> * The label at the bottom is where we’ll show the total, so right now we can ignore that.
+> * That middle section, though – what are those percentages for?
+> 
+> Yes, we know they are to select how much tip to leave, but that isn’t obvious on the screen. We can – and should do better.
+> 
+> One option is to add another text view directly before the segmented control, which we could do like this:
+
+```swift
+Section {
+    Text("How much tip do you want to leave?")
+
+    Picker("Tip percentage", selection: $tipPercentage) {
+        ForEach(tipPercentages, id: \.self) {
+            Text($0, format: .percent)
+        }
+    }
+    .pickerStyle(.segmented)
+}
+```
+
+> That works OK, but it doesn’t look great – it looks like it’s an item all by itself, rather than a label for the segmented control.
+> 
+> A much better idea is to modify the section itself: SwiftUI lets us add views to the header and footer of a section, which in this instance we can use to add a small explanatory prompt. In fact, we can use the same text view we just created, just moved to be the section header rather than a loose label inside it.
+> 
+> Here’s how that looks in code:
+
+```swift
+Section {
+    Picker("Tip percentage", selection: $tipPercentage) {
+        ForEach(tipPercentages, id: \.self) {
+            Text($0, format: .percent)
+        }
+    }
+    .pickerStyle(.segmented)
+} header: {
+    Text("How much tip do you want to leave?")
+}
+```
+
+> That uses multiple trailing closures to specify both the section body (the first closure) and the second header (the second closure).
+> 
+> It’s a small change to the code, but I think the end result looks a lot better – the text now looks like a prompt for the segmented control directly below it.
+
 ## :four: [Calculating the total per person](https://www.hackingwithswift.com/books/ios-swiftui/reading-text-from-the-user-with-textfield) 
 
 ## :five: [Hiding the keyboard](https://www.hackingwithswift.com/books/ios-swiftui/reading-text-from-the-user-with-textfield) 
