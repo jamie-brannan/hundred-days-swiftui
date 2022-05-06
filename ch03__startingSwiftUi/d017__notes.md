@@ -121,6 +121,89 @@ TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.
 
 ## :two: [Creating pickers in a form](https://www.hackingwithswift.com/books/ios-swiftui/reading-text-from-the-user-with-textfield) 
 
+> SwiftUI’s pickers serve multiple purposes, and exactly how they look depends on which device you’re using and the context where the picker is used.
+> 
+> In our project we have a form asking users to enter how much their check came to, and we want to add a picker to that so they can select how many people will share the check.
+> 
+> Pickers, like text fields, need a two-way binding to a property so they can track their value. We already made an @State property for this purpose, called numberOfPeople, so our next job is to loop over all the numbers from 2 through to 99 and show them inside a picker.
+> 
+> Modify the first section in your form to include a picker, like this:
+
+```swift
+Section {
+    TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currencyCode ?? "USD"))
+        .keyboardType(.decimalPad)
+
+    Picker("Number of people", selection: $numberOfPeople) {
+        ForEach(2 ..< 100) {
+            Text("\($0) people")
+        }
+    }
+}
+```
+
+> Now run the program in the simulator and try it out – what do you notice?
+> 
+> Hopefully you spot several things:
+> 
+> * There’s a new row that says “Number of people” on the left and “4 people” on the right.
+> * There’s a gray disclosure indicator on the right edge, which is the iOS way of signaling that tapping the row shows another screen.
+> * Tapping the row doesn’t show another screen.
+> * The row says “4 people”, but we gave our numberOfPeople property a default value of 2.
+> 
+> So, it’s a bit of “two steps forward, two steps back” – we have a nice result, but it doesn’t work and doesn’t show the right information!
+> 
+> We’ll fix both of those, starting with the easy one: why does it say 4 people when we gave numberOfPeople the default value of 2? Well, when creating the picker we used a ForEach view like this:
+
+```swift
+ForEach(2 ..< 100) {
+```
+
+> That counts from 2 up to 100, creating rows. What that means is that our 0th row – the first that is created – contains “2 People”, so when we gave `numberOfPeople` the value of 2 we were actually setting it to the third row, which is “4 People”.
+
+:question: *Huh?* 
+* This is about the value of `@State private var numberOfPeople = 2` default will be interpreted as the third row, which is "4 People" ultimately
+
+> So, although it’s a bit brain-bending, the fact that our UI shows “4 people” rather than “2 people” isn’t a bug. But there is still a large bug in our code: why does tapping on the row do nothing?
+
+> If you create a picker by itself, outside a form, iOS will show a spinning wheel of options. Here, though, we’ve told SwiftUI that this is a form for user input, and so it has automatically changed the way our picker looks so that it doesn’t take up so much space.
+
+> What SwiftUI wants to do – which is also why it’s added the gray disclosure indicator on the right edge of the row – is show a new view with the options from our picker. To do that, we need to add a navigation view, which does two things: gives us some space across the top to place a title, and also lets iOS slide in new views as needed.
+
+NavigationView does two things:
+* gives us some space across the top to place a title, 
+* and also lets iOS slide in new views as needed.
+
+Not different really from NavigationViewController
+
+> So, directly before the form add `NavigationView {`, and after the form’s closing brace add another closing brace. If you got it right, your code should look like this:
+
+```swift
+var body: some View {
+    NavigationView {
+        Form {
+            // everything inside your form
+        }
+    }
+}
+```
+
+> If you run the program again you’ll see a large gray space at the top, which is where iOS is giving us room to place a title. We’ll do that in a moment, but first try tapping on the Number Of People row and you should see a new screen slide in with all the other possible options to choose from.
+> 
+> You should see that “4 People” has a checkmark next to it because it’s the selected value, but you can also tap a different number instead – the screen will automatically slide away again, taking the user back to the previous screen with their new selection.
+> 
+> What you’re seeing here is the importance of what’s called declarative user interface design. This means we say what we want rather than say how it should be done. We said we wanted a picker with some values inside, but it was down to SwiftUI to decide whether a wheel picker or the sliding view approach is better. It’s choosing the sliding view approach because the picker is inside a form, but on other platforms and environments it could choose something else.
+> 
+> Before we’re done with this step, let’s add a title to that new navigation bar. Give the form this modifier:
+
+```swift
+.navigationTitle("WeSplit")
+```
+
+> Tip: It’s tempting to think that modifier should be attached to the end of the `NavigationView`, but it needs to be attached to the end of the `Form` instead. _The reason is that navigation views are capable of showing many views as your program runs, so by attaching the title to the thing inside the navigation view we’re allowing iOS to change titles freely._
+
+:white_check_mark: All set
+
 ## :three: [Adding a segmented control for tip percentages](https://www.hackingwithswift.com/books/ios-swiftui/reading-text-from-the-user-with-textfield) 
 
 ## :four: [Calculating the total per person](https://www.hackingwithswift.com/books/ios-swiftui/reading-text-from-the-user-with-textfield) 
