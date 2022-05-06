@@ -390,3 +390,59 @@ Section {
 
 ## :five: [Hiding the keyboard](https://www.hackingwithswift.com/books/ios-swiftui/reading-text-from-the-user-with-textfield) 
 
+> We’re now almost at the end of our project, but you might have spotted an annoyance: once the keyboard appears for the check amount entry, it never goes away!
+> 
+> This is a problem with the decimal and number keypads, because the regular alphabetic keyboard has a return key on there to dismiss the keyboard. However, with a little extra work we can fix this:
+> 
+> 1. We need to give SwiftUI some way of determining whether the check amount box should currently have focus – should be receiving text input from the user.
+> 2. We need to add some kind of button to remove that focus when the user wants, which will in turn cause the keyboard to go away.
+> 
+> To solve the first one you need to meet your second property wrapper: @FocusState. This is exactly like a regular @State property, except it’s specifically designed to handle input focus in our UI.
+> 
+> Add this new property to ContentView:
+
+```swift
+@FocusState private var amountIsFocused: Bool
+```
+
+>Now we can attach that to our text field, so that when the text field is focused amountIsFocused is true, otherwise it’s false. Add this modifier to your TextField:
+
+```swift
+.focused($amountIsFocused)
+```
+
+> That’s the first part of our problem solved: although we can’t see anything different on the screen, SwiftUI is at least silently aware of whether the text field should have focus or not.
+> 
+> The second part of our solution is to add a toolbar to the keyboard when it appears, so we can place a Done button in there. To make this work really well you need to meet several new SwiftUI views, so I think the best thing to do is show you the code then explain what it does.
+> 
+> Add this new modifier to your form, below the existing navigationTitle() modifier:
+
+```swift
+.toolbar {
+    ToolbarItemGroup(placement: .keyboard) {           
+        Button("Done") {
+            amountIsFocused = false
+        }
+    }
+}
+```
+
+> Yes, that’s quite a lot of code, so let’s break it down:
+> 
+> * The `toolbar()` modifier lets us specify toolbar items for a view. These toolbar items might appear in various places on the screen – in the navigation bar at the top, in a special toolbar area at the bottom, and so on.
+> * `ToolbarItemGroup` lets us place one or more buttons in a specific location, and this is where we get to specify we want a keyboard toolbar – a toolbar that is attached to the keyboard, so it will automatically appear and disappear with the keyboard.
+> * The `Button` view we’re using here displays some tappable text, which in our case is “Done”. We also need to provide it with some code to run when the button is pressed, which in our case sets `amountIsFocused` to false so that the keyboard is dismissed.
+> 
+> You’ll meet these more in the future, but for now I recommend you run the program and try it out – it’s a big improvement!
+> 
+> Before we’re done, there’s one last small change I want to make: I’d like you to modify the ToolbarItemGroup to this:
+
+```swift
+ToolbarItemGroup(placement: .keyboard) {
+    Spacer()
+
+    Button("Done") {
+        amountIsFocused = false
+    }
+}
+```
