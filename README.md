@@ -14,4 +14,4 @@ Now that you’ve mastered the basics of Swift, in these days you’ll start bui
 | Challenge day | Calendar day | Within goaltime?| What was new? |
 |---|---|---|---|
 | Day 016 | March 7, 2022 | ~ | Project 1, part one |
-| Day 017 | March 7, 2022 | ~ | Project 1, part two |
+| Day 017 | May 6, 2022 | :white_check_mark: | Project 1, part two |
