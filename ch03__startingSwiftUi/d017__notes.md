@@ -67,6 +67,8 @@ TextField("Amount", value: $checkAmount, format: .currency(code: "USD"))
 .currency(code: Locale.current.currencyCode ?? "USD"))
 ```
 
+:warning: *This is only available on iOS 15 and up, so had to update projects version target* 
+
 > `Locale` is a massive struct built into iOS that is responsible for storing all the user’s region settings – what calendar they use, how they separate thousands digits in numbers, whether they use the metric system, and more. In our case, we’re asking whether the user has a preferred currency code, and if they don’t we’ll fall back to “USD” so at least we have something.
 > 
 > So far our code creates a scrolling entry form of one section, which in turn contains one row: our text field. When you create text fields in forms, the first parameter is a string that gets used as the placeholder – gray text shown in side the text field, giving users an idea of what should be in there. The second parameter is the two-way binding to our `checkAmount` property, which means as the user types that property will be updated. The third parameter here is the one that controls the way the text is formatted, making it a currency.
