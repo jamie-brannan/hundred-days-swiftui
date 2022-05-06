@@ -296,5 +296,97 @@ Section {
 
 ## :four: [Calculating the total per person](https://www.hackingwithswift.com/books/ios-swiftui/reading-text-from-the-user-with-textfield) 
 
+> So far the final section in our form has shown a simple text view with whatever check amount the user entered, but now it’s time for the important part of this project: we want that text view to show how much each person needs to contribute to the payment.
+> 
+> There are a few ways we could solve this, but the easiest one also happens to be the cleanest one, by which I mean it gives us code that is clear and easy to understand: we’re going to add a computed property that calculates the total.
+> 
+> This needs to do a small amount of mathematics: the total amount payable per person is equal to the value of the order, plus the tip percentage, divided by the number of people.
+> 
+> But before we can get to that point, we first need to pull out the values for how many people there are, what the tip percentage is, and the value of the order. That might sound easy, but as you’ve already seen, `numberOfPeople` is off by 2 – when it stores the value 3 it means 5 people.
+> 
+> So, we’re going to create a new computed property called `totalPerPerson` that will be a Double, and it will start off by getting the input data ready: what is the correct number of people, and how much tip do they want to leave?
+> 
+> First, add the computed property itself, just before the `body` property:
+
+```swift
+var totalPerPerson: Double {
+    // calculate the total per person here
+    return 0
+}
+```
+
+> That sends back 0 so your code doesn’t break, but we’re going to replace the `// calculate the total per person here` comment with our calculations.
+> 
+> Next, we can figure out how many people there are by reading numberOfPeople and adding 2 to it. Remember, this thing has the range 2 to 100, but it counts from 0, which is why we need to add the 2.
+> 
+> So, start by replacing `// calculate the total per person here` with this:
+
+```swift
+let peopleCount = Double(numberOfPeople + 2)
+```
+
+> You’ll notice that converts the resulting value to a `Double` because it needs to be used alongside the checkAmount.
+> 
+> For the same reason, we also need to convert our tip percentage into a `Double`:
+
+```swift
+let tipSelection = Double(tipPercentage)
+```
+
+> Now that we have our input values, it’s time do our mathematics. This takes another three steps:
+> 
+> * We can calculate the tip value by dividing `checkAmount` by 100 and multiplying by `tipSelection`.
+> * We can calculate the grand total of the check by adding the tip value to `checkAmount`.
+> * We can figure out the amount per person by dividing the grand total by `peopleCount`.
+> 
+> Once that’s done, we can return the amount per person and we’re done.
+> 
+> Replace return 0 in the property with this:
+
+```swift
+let tipValue = checkAmount / 100 * tipSelection
+let grandTotal = checkAmount + tipValue
+let amountPerPerson = grandTotal / peopleCount
+
+return amountPerPerson
+```
+
+If you’ve followed everything correctly your code should look like this:
+
+```swift
+var totalPerPerson: Double {
+    let peopleCount = Double(numberOfPeople + 2)
+    let tipSelection = Double(tipPercentage)
+
+    let tipValue = checkAmount / 100 * tipSelection
+    let grandTotal = checkAmount + tipValue
+    let amountPerPerson = grandTotal / peopleCount
+
+    return amountPerPerson
+}
+```
+
+> Now that `totalPerPerson` gives us the correct value, we can change the final section in our table so it shows the correct text.
+> 
+> Replace this:
+
+```swift
+Section {
+    Text(checkAmount, format: .currency(code: Locale.current.currencyCode ?? "USD"))
+}
+```
+
+> With this: 
+
+```swift
+Section {
+    Text(totalPerPerson, format: .currency(code: Locale.current.currencyCode ?? "USD"))
+}
+```
+
+> Try running the app now, and see what you think. You should find that because all the values that make up our total are marked with `@State`, changing any of them will cause the total to be recalculated automatically.
+> 
+> Hopefully you’re now seeing for yourself what it means that SwiftUI’s views are a function of their state – when the state changes, the views automatically update to match.
+
 ## :five: [Hiding the keyboard](https://www.hackingwithswift.com/books/ios-swiftui/reading-text-from-the-user-with-textfield) 
 
