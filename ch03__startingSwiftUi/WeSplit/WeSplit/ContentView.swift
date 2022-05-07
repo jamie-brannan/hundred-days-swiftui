@@ -25,6 +25,13 @@ struct ContentView: View {
     return amountPerPerson
   }
   
+  var grandTotal: Double {
+    let tipValue = checkAmount / 100 * Double(tipPercentage)
+    let grandTotal = checkAmount + tipValue
+    
+    return grandTotal
+  }
+
   @FocusState private var amountIsFocused: Bool
   
   var body: some View {
@@ -55,6 +62,11 @@ struct ContentView: View {
           Text(totalPerPerson, format: .currency(code: Locale.current.currencyCode ?? "USD"))
         } header: {
           Text("Total per person")
+        }
+        Section {
+          Text(grandTotal, format: .currency(code: Locale.current.currencyCode ?? "USD"))
+        } header: {
+          Text("Grand total")
         }
       }
       .navigationTitle("WeSplit")
