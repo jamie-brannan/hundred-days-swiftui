@@ -70,8 +70,23 @@ Picker("Tip percentage", selection: $tipPercentage) {
 
   - [x]  Add a header to the third section, saying “Amount per person”
   - [x]  Add another section showing the total amount for the check – i.e., the original amount plus tip value, without dividing by the number of people.
-  - [ ]  Change the tip percentage picker to show a new screen rather than using a segmented control, and give it a wider range of options – everything from 0% to 100%. Tip: use the range 0..<101 for your range rather than a fixed array.
+  - [x]  Change the tip percentage picker to show a new screen rather than using a segmented control, and give it a wider range of options – everything from 0% to 100%. Tip: use the range 0..<101 for your range rather than a fixed array.
+
+```swift
+        Section {
+          Picker("Tip percentage", selection: $tipPercentage) {
+            ForEach(tipPercentages, id: \.self) {
+              Text($0, format: .percent)
+            }
+          }
+        } header: {
+          Text("How much tip do you want to leave?")
+        }
+```
+
 
 > And if you found those easy, here’s a tough one for you: rather than having to type `.currency(code: Locale.current.currencyCode ?? "USD")` in two places, can you make a new property to store the currency formatter? You’ll need to give your property a specific return type in order to keep the rest of your code happy: `FloatingPointFormatStyle<Double>.Currency`.
-> 
+
+Create a function that returns that type.
+
 > You can find that for yourself using Xcode’s Quick Help window – open up the right-hand navigator, then select the Quick Help inspector, and finally click select the `.currency` code. You’ll see Xcode displays `<Value>` rather than `<Double>`, because this thing is able to display other kinds of floating-point numbers too, but here we need Double.

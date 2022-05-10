@@ -12,7 +12,7 @@ struct ContentView: View {
   @State private var numberOfPeople = 2
   
   let tipPercentages = [10, 15, 20, 25, 0]
-  @State var tipPercentage: Int = 10
+  @State private var tipPercentage = 10
   
   var totalPerPerson: Double {
     let peopleCount = Double(numberOfPeople + 2) /// compensate for row offset
@@ -32,6 +32,10 @@ struct ContentView: View {
     return grandTotal
   }
 
+  var localCurrency: FloatingPointFormatStyle<Double>.Currency {
+    return .currency(code: Locale.current.currencyCode ?? "USD")
+  }
+
   @FocusState private var amountIsFocused: Bool
   
   var body: some View {
@@ -39,7 +43,7 @@ struct ContentView: View {
       Form {
         Section {
           // NB: this is only available in iOS 15
-          TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currencyCode ?? "USD"))
+          TextField("Amount", value: $checkAmount, format: localCurrency )
             .keyboardType(.decimalPad)
             .focused($amountIsFocused)
         }
@@ -49,7 +53,6 @@ struct ContentView: View {
               Text($0, format: .percent)
             }
           }
-          .pickerStyle(.segmented)
         } header: {
           Text("How much tip do you want to leave?")
         }
