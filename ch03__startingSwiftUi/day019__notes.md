@@ -36,11 +36,11 @@ A "converter" basically?
 
 What would I like as a converter? :arrow_right: **Volume**
 
-  - [ ]  picker control for :  milliliters, liters, cups, pints, or gallons
-    - [ ]  input
-    - [ ]  output
-  - [ ]  text fild for input
-  - [ ]  text view for result
+  - [x]  picker control for :  milliliters, liters, cups, pints, or gallons
+    - [x]  input
+    - [x]  output
+  - [x]  text fild for input
+  - [x]  text view for result
 
 ## Tips
 
