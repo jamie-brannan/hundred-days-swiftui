@@ -9,35 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
   var body: some View {
-    HStack {
-      HelloColumn()
-      HelloColumn()
-      HelloColumn()
-    }
+    ZStack {
+      Text("Your content")
+        
+    }.background(.red)
   }
 }
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
     ContentView()
-  }
-}
-
-struct HelloWorldHStack: View {
-  var body: some View {
-    HStack {
-      Text("Hello, world!")
-      Text("This is inside a stack")
-    }
-  }
-}
-
-struct HelloColumn: View {
-  var body: some View {
-    VStack {
-      HelloWorldHStack()
-      HelloWorldHStack()
-      HelloWorldHStack()
-    }
   }
 }
