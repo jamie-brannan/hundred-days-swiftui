@@ -95,7 +95,7 @@ VStack(alignment: .leading) {
 }
 ```
 
-> Alongside VStack we have HStack for arranging things horizontally. This has the same syntax as VStack, including the ability to add spacing and alignment:
+> Alongside `VStack` we have `HStack` for arranging things horizontally. This has the same syntax as `VStack`, including the ability to add spacing and alignment:
 
 ```swift
 HStack(spacing: 20) {
@@ -104,7 +104,11 @@ HStack(spacing: 20) {
 }
 ```
 
+:white_check_mark: 
+
 > Vertical and horizontal stacks automatically fit their content, and prefer to align themselves to the center of the available space. If you want to change that you can use one or more Spacer views to push the contents of your stack to one side. These automatically take up all remaining space, so if you add one at the end a VStack it will push all your views to the top of the screen:
+
+:question: *These are all UIStackViews essentially?* 
 
 ```swift
 VStack {
@@ -128,7 +132,7 @@ VStack {
 }
 ```
 
-> We also have ZStack for arranging things by depth – it makes views that overlap. In the case of our two text views, this will make things rather hard to read:
+> We also have ZStack **for arranging things by depth** – it makes views that overlap. In the case of our two text views, this will make things rather hard to read:
 
 ```swift
 ZStack {
@@ -137,11 +141,13 @@ ZStack {
 }
 ```
 
-> ZStack doesn’t have the concept of spacing because the views overlap, but it does have alignment. So, if you have one large thing and one small thing inside your ZStack, you can make both views align to the top like this: ZStack(alignment: .top) {.
+> `ZStack` **doesn’t have the concept of spacing because the views overlap**, but it does have alignment. So, if you have one large thing and one small thing inside your `ZStack`, you can make both views align to the top like this: `ZStack(alignment: .top) {`.
 > 
-> ZStack draws its contents from top to bottom, back to front. This means if you have an image then some text ZStack will draw them in that order, placing the text on top of the image.
+> `ZStack` draws its contents from top to bottom, back to front. This means if you have an image then some text `ZStack` will draw them in that order, placing the text on top of the image.
 > 
 > Try placing several horizontal stacks inside a single vertical stack – can you make a 3x3 grid?
+
+:tada: *Yes! Did it! :)*
 
 ## :three:  [Colors and frames](https://www.hackingwithswift.com/books/ios-swiftui/colors-and-frames) 
 
