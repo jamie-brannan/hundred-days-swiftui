@@ -9,9 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
   var body: some View {
-    ZStack {
-      Text("Hello, world!")
-      Text("This is inside a stack")
+    HStack {
+      HelloColumn()
+      HelloColumn()
+      HelloColumn()
     }
   }
 }
@@ -19,5 +20,24 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
     ContentView()
+  }
+}
+
+struct HelloWorldHStack: View {
+  var body: some View {
+    HStack {
+      Text("Hello, world!")
+      Text("This is inside a stack")
+    }
+  }
+}
+
+struct HelloColumn: View {
+  var body: some View {
+    VStack {
+      HelloWorldHStack()
+      HelloWorldHStack()
+      HelloWorldHStack()
+    }
   }
 }
