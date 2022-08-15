@@ -163,7 +163,7 @@ ZStack {
 
 > If we want to put something behind the text, we need to place it above it in the ZStack. But what if we wanted to put some red behind there – how would we do that?
 > 
-> One option is to use the background() modifier, which can be given a color to draw like this:
+> One option is to use the `background()` modifier, which can be given a color to draw like this:
 
 ```swift
 ZStack {
@@ -172,7 +172,7 @@ ZStack {
 .background(.red)
 ```
 
-> That might have done what you expected, but there’s a good chance it was a surprise: only the text view had a background color, even though we’ve asked the whole ZStack to have it.
+> That might have done what you expected, but there’s a good chance it was a surprise: only the text view had a background color, even though we’ve asked the whole `ZStack` to have it.
 > 
 > In fact, there’s no difference between that code and this:
 
@@ -183,7 +183,7 @@ ZStack {
 }
 ```
 
-> If you want to fill in red the whole area behind the text, you should place the color into the ZStack – treat it as a whole view, all by itself:
+> If you want to **fill in red the whole area behind the text**, you should place the color into the ZStack – treat it as a whole view, all by itself:
 
 ```swift
   ZStack {
