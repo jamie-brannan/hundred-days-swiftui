@@ -236,13 +236,15 @@ ZStack {
 .ignoresSafeArea() 
 ```
 
+:bookmark: Thursday November 23, 2023 – 19:30** : *Picking back up and this is what appears in the project as a stopping point.* 
+
 > It is critically important that no important content be placed outside the safe area, because it might be hard if not impossible for the user to see. Some views, such as List, allow content to scroll outside the safe area but then add extra insets so the user can scroll things into view.
 > 
 > If your content is just decorative – like our background color here – then extending it outside the safe area is OK.
 > 
-> Before we’re done, there’s one more thing I want to mention: as well as using fixed colors such as .red and .green, the background() modifier can also accept materials. These apply a frosted glass effect over whatever comes below them, which allows us to create some beautiful depth effects.
+> Before we’re done, there’s one more thing I want to mention: as well as using fixed colors such as `.red `and `.green`, the `background()` modifier can also accept materials. These apply a frosted glass effect over whatever comes below them, which allows us to create some beautiful depth effects.
 > 
-> To see this in action, we could build up our ZStack so that it has two colors inside a VStack, so they split the available space between them. Then, we’ll attach a couple of modifiers to our text view so that it has a gray color, with an ultra thin material behind it:
+> To see this in action, we could build up our ZStack so that it has two colors inside a `VStack`, so they split the available space between them. Then, we’ll attach a couple of modifiers to our text view so that it has a gray color, with an ultra thin material behind it:
 
 ```swift
 ZStack {
@@ -259,11 +261,15 @@ ZStack {
 .ignoresSafeArea()
 ```
 
+I understand this already on my own terms from work with MYM now.
+
+:star: *In the video, reviews semantic color* 
+
 > That uses the thinnest material, which is means we’re letting a lot of the background colors shine through our frosted glass effect. iOS automatically adapts the effect based on whether the user has light or dark mode enabled – our material will either be light-colored or dark-colored, as appropriate.
 > 
 > There are other material thicknesses available depending on what effect you want, but there’s something even neater I want to show to you. It’s subtle, though, so I’d like you to click the tiny magnifying glass icon at the bottom of your SwiftUI preview so you can get a super close-up look at the “Your content” text.
 > 
-> Right now you’ll see “Your content” is written in gray, because we’re using a secondary foreground color. However, SwiftUI gives us an alternative that provides a very slightly different effect: change the foregroundColor() modifier to foregroundStyle() – do you see the difference?
+> Right now you’ll see “Your content” is written in gray, because we’re using a secondary foreground color. However, SwiftUI gives us an alternative that provides a very slightly different effect: change the `foregroundColor()` modifier to `foregroundStyle()` – do you see the difference?
 > 
 > You should be able to see that the text is no longer just gray, but instead allows a little of the red and blue background colors to come through. It’s not a lot, just a hint, but when used effectively this provides a really beautiful effect to make sure text stands out regardless of the background behind it. iOS calls this effect vibrancy, and it’s used a lot throughout the system.
 
@@ -283,7 +289,6 @@ ZStack {
 LinearGradient(gradient: Gradient(colors: [.white, .black]), startPoint: .top, endPoint: .bottom)
 
 ```
-
 > The inner Gradient type used there can also be provided with gradient stops, which let you specify both a color and how far along the gradient the color should be used. For example, we could specify that our gradient should be white from the start up to 45% of the available space, then black from 55% of the available space onwards:
 
 ```swift
@@ -292,6 +297,8 @@ LinearGradient(gradient: Gradient(stops: [
         Gradient.Stop(color: .black, location: 0.55),
     ]), startPoint: .top, endPoint: .bottom)
 ```
+
+Locations are percentages
 
 > That will create a much sharper gradient – it will be compressed into a small space in the center.
 > 
@@ -319,6 +326,8 @@ AngularGradient(gradient: Gradient(colors: [.red, .yellow, .green, .blue, .purpl
 ```
 
 > All of these gradient types can have stops provided rather than simple colors. Plus, they can also work as standalone views in your layouts, or be used as part of a modifier – you can use them as the background for a text view, for example.
+
+All pretty standard and obvious interpretation of the documentation
 
 ## :five:  [Buttons and images](https://www.hackingwithswift.com/books/ios-swiftui/buttons-and-images) 
 
