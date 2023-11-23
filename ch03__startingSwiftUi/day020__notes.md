@@ -437,6 +437,8 @@ Button {
 > 
 > Tip: If you find that your images have become filled in with a color, for example showing as solid blue rather than your actual picture, this is probably SwiftUI coloring them to show that they are tappable. To fix the problem, use the renderingMode(.original) modifier to force SwiftUI to show the original image rather than the recolored version.
 
+Nothing I didn't have to break my brain over for Leeloo project
+
 ## :six:  [Showing alert messages](https://www.hackingwithswift.com/books/ios-swiftui/showing-alert-messages) 
 
 > If something important happens, a common way of notifying the user is using an alert – a pop up window that contains a title, message, and one or two buttons depending on what you need.
@@ -514,3 +516,4 @@ Button("Show Alert") {
 > 
 > When you’re ready, put ContentView.swift back to the way it started when you first made the project, so we have a clean slate to work from.
 
+Nothing new here either. This concludes the day!
