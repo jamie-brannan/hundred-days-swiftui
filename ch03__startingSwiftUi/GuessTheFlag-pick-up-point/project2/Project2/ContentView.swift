@@ -12,6 +12,7 @@ struct ContentView: View {
   @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
   /// This is the answer to the question and the country that'll be selected
   @State private var correctAnswer = Int.random(in: 0...2)
+  @State private var roundsRemaining = 8
   
   @State private var showingScore = false
   @State private var scoreTitle = ""
@@ -62,6 +63,13 @@ struct ContentView: View {
   }
   
   func flagTapped(_ number: Int) {
+    guard roundsRemaining > 1 else {
+      scoreTitle = "The End"
+      scoreMessage = "Want to play again?"
+      showingScore = true
+      return
+    }
+    roundsRemaining -= 1
     if number == correctAnswer {
       scoreTitle = "Correct"
       runningScore += 1
