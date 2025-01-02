@@ -42,7 +42,7 @@ Woah, totally not what I thought. I need to look this up. I don't have the json 
 
 :arrow_right_hook: *Looking at wrong "Project" number that he put into the answers git repo.*
 
-So idk what the hell happened, but htere's no scoring work, so I'm just going to copy the whole project over to my new repo and do the correction there.
+So idk what the hell happened, but there's no scoring work, so I'm just going to copy the whole project over to my new repo and do the correction there.
 
 > Add an @State property to store the user’s score, modify it when they get an answer right or wrong, then display it in the alert and in the score label.
 > 
