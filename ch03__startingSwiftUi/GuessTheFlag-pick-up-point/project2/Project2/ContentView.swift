@@ -66,6 +66,7 @@ struct ContentView: View {
     guard roundsRemaining > 1 else {
       scoreTitle = "The End"
       scoreMessage = "Want to play again?"
+      roundsRemaining -= 1
       showingScore = true
       return
     }
@@ -84,6 +85,10 @@ struct ContentView: View {
   }
   
   func askQuestion() {
+    if roundsRemaining == 0 {
+      runningScore = 0
+      roundsRemaining = 8
+    }
     countries.shuffle()
     correctAnswer = Int.random(in: 0...2)
   }
