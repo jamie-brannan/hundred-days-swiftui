@@ -45,7 +45,11 @@ Woah, totally not what I thought. I need to look this up. I don't have the json 
 So idk what the hell happened, but there's no scoring work, so I'm just going to copy the whole project over to my new repo and do the correction there.
 
 > Add an @State property to store the user’s score, modify it when they get an answer right or wrong, then display it in the alert and in the score label.
-> 
+
+It says just to modify it so I'm not going to worry about the score always being zero, I'll allow it to go negative.
+
+I'm looking to build with Swift not necessarily make a killer app for production.   
+
 > When someone chooses the wrong flag, tell them their mistake in your alert message – something like “Wrong! That’s the flag of France,” for example.
 > 
 > Make the game show only 8 questions, at which point they see a final alert judging their score and can restart the game.
