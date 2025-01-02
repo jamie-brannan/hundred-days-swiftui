@@ -51,9 +51,15 @@ It says just to modify it so I'm not going to worry about the score always being
 I'm looking to build with Swift not necessarily make a killer app for production.   
 
 > When someone chooses the wrong flag, tell them their mistake in your alert message – something like “Wrong! That’s the flag of France,” for example.
-> 
+
+~~:question: *Make a message function then?* ~~
+
+Just going to keep it basic with sting handling.
+
 > Make the game show only 8 questions, at which point they see a final alert judging their score and can restart the game.
-> 
+
+
+
 > Hacking with Swift+ subscribers can get a complete video solution for this checkpoint here: Solution to Guess the Flag. If you don’t already subscribe, you can start a free trial today.
 > 
 > Note: That last one takes a little more thinking than the others. A good place to start would be to add a second alert() modifier watching a different Boolean property, then connect its button to a reset() method to set the game back to its initial state.
